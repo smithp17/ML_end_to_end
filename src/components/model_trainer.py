@@ -48,9 +48,61 @@ class ModelTrainer:
                 "XGBRF Regressor": XGBRFRegressor(),
                 "CatBoost Regressor": CatBoostRegressor(verbose=False),
             }
+            
+            params = {
+                "Decision Tree Regressor": {
+                    'criterion': ['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    'splitter': ['best', 'random'],
+                    'max_features': ['sqrt', 'log2', None],
+                },
+                "Random Forest Regressor": {
+                    'criterion': ['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    'max_features': ['sqrt', 'log2', None],
+                    'n_estimators': [8, 16, 32, 64, 128, 256],
+                },
+                "Gradient Boosting Regressor": {
+                    'loss': ['squared_error', 'huber', 'absolute_error', 'quantile'],
+                    'learning_rate': [0.1, 0.05, 0.01],
+                    'subsample': [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+                    'criterion': ['squared_error', 'friedman_mse'],
+                    'max_features': ['auto', 'sqrt', 'log2'],
+                    'n_estimators': [8, 16, 32, 64, 128, 256],
+                },
+                "AdaBoost Regressor": {
+                    'n_estimators': [50, 100, 200, 300],
+                    'learning_rate': [0.1, 0.05, 0.01, 1.0],
+                    'loss': ['linear', 'square', 'exponential'],
+                },
+                "K-Neighbors Regressor": {
+                    'n_neighbors': [3, 5, 7, 9],
+                    'weights': ['uniform', 'distance'],
+                    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'],
+                    'leaf_size': [10, 30, 50],
+                },
+                "XGBRF Regressor": {
+                    'learning_rate': [0.1, 0.01, 0.05],
+                    'n_estimators': [50, 100, 200, 300],
+                    'max_depth': [3, 5, 7, 9],
+                    'subsample': [0.6, 0.7, 0.8, 0.9],
+                    'colsample_bytree': [0.6, 0.7, 0.8, 0.9],
+                },
+                "CatBoost Regressor": {
+                    'iterations': [100, 200, 300, 500],
+                    'depth': [4, 6, 8, 10],
+                    'learning_rate': [0.1, 0.01, 0.05],
+                    'l2_leaf_reg': [1, 3, 5, 7, 9],
+                },
+                "Linear Regression": {
+                    'fit_intercept': [True, False],
+                    'copy_X': [True, False],
+                    'positive': [True, False],
+                },
+            }
+
+
 
             model_report: dict = evaluate_models(
-                X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models
+                X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, params=params
             )
 
             # To get the best model score from dict
