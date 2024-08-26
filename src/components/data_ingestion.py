@@ -8,7 +8,8 @@ from dataclasses import dataclass
 # Add the root directory of your project to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from src.components.data_transformation import DataTransformation, DataTransformationConfig
+from src.components.model_trainer import ModelTrainer
+from src.components.data_transformation import DataTransformation
 
 # Define the path where logs should be saved
 LOG_DIR = r"C:\Users\Smith\OneDrive\Desktop\MLend-to-end\logs"
@@ -47,9 +48,9 @@ class CustomException(Exception):
 
 @dataclass
 class DataIngestionConfig:
-    train_data_path: str = os.path.join('artifact', "train.csv")
-    test_data_path: str = os.path.join('artifact', "test.csv")
-    raw_data_path: str = os.path.join('artifact', "raw.csv")
+    train_data_path: str = os.path.join('artifacts', "train.csv")
+    test_data_path: str = os.path.join('artifacts', "test.csv")
+    raw_data_path: str = os.path.join('artifacts', "raw.csv")
 
 class DataIngestion:
     def __init__(self):
@@ -103,4 +104,7 @@ if __name__ == "__main__":
     train_data, test_data = obj.initiate_data_ingestion()
 
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr))
