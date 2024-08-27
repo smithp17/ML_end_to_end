@@ -17,8 +17,8 @@ from xgboost import XGBRFRegressor
 from src.exception import CustomException
 from src.logger import logging
 
+# Import the save_object function from utils.py
 from src.utils import save_object, evaluate_models
-
 
 @dataclass
 class ModelTrainerConfig:
@@ -65,7 +65,7 @@ class ModelTrainer:
                     'learning_rate': [0.1, 0.05, 0.01],
                     'subsample': [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
                     'criterion': ['squared_error', 'friedman_mse'],
-                    'max_features': ['auto', 'sqrt', 'log2'],
+                    'max_features': ['sqrt', 'log2'],
                     'n_estimators': [8, 16, 32, 64, 128, 256],
                 },
                 "AdaBoost Regressor": {
@@ -98,8 +98,6 @@ class ModelTrainer:
                     'positive': [True, False],
                 },
             }
-
-
 
             model_report: dict = evaluate_models(
                 X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, params=params
